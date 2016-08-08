@@ -129,4 +129,3 @@ STATIC_URL = '/static/'
 AUTHENTICATION_BACKENDS = (
         'commonService.views.MyCustomBackend',
 )
-print AUTHENTICATION_BACKENDS

@@ -32,16 +32,11 @@ class AjaxResponseMixin(object):
 
 from appApi.models import User
 
-class MyCustomBackend:
+class MyCustomBackend(object):
 
     def authenticate(self, phone=None, password=None):
-        try:
-            user = User.objects.get(phone=phone)
-        except User.DoesNotExist:
-            pass
-        else:
-            if user.check_password(password):
-                return user
+        if phone.check_password(password):
+            return phone
         return None
 
     def get_user(self, user_id):

@@ -19,7 +19,7 @@ class UserLoginView(FormView, AjaxResponseMixin):
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        login(self.request, form.get_user())
+        self.request.user = form.get_user()
         user = form.get_user()
         context = {
             'msg': u'登录成功',
