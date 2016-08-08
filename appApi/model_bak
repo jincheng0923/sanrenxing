@@ -1,0 +1,1172 @@
+
+#
+# class RbAlbum(models.Model):
+#     appname = models.CharField(max_length=64)
+#     appaction = models.CharField(max_length=64)
+#     appobjectid = models.CharField(max_length=32)
+#     userid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     pic = models.CharField(max_length=128)
+#     count = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_album'
+#
+#
+# class RbAlbumPic(models.Model):
+#     albumid = models.IntegerField()
+#     attachmentid = models.IntegerField()
+#     url = models.CharField(max_length=128)
+#     title = models.CharField(max_length=128)
+#     des = models.CharField(max_length=256)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_album_pic'
+#
+#
+# class RbApps(models.Model):
+#     name = models.CharField(max_length=64)
+#     ico = models.CharField(max_length=128)
+#     des = models.CharField(max_length=256)
+#     rolemap = models.TextField()
+#     version = models.CharField(max_length=16)
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_apps'
+#
+#
+# class RbAttachment(models.Model):
+#     appname = models.CharField(max_length=64)
+#     appaction = models.CharField(max_length=64)
+#     appobjectid = models.CharField(max_length=32)
+#     filename = models.CharField(max_length=128)
+#     width = models.IntegerField()
+#     height = models.IntegerField()
+#     userid = models.IntegerField()
+#     path = models.CharField(max_length=128)
+#     size = models.IntegerField()
+#     filetype = models.CharField(max_length=16)
+#     downloadcount = models.IntegerField()
+#     dateline = models.IntegerField()
+#     note = models.CharField(max_length=128)
+#     type = models.IntegerField()
+#     remote = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_attachment'
+#
+#
+# class RbCart(models.Model):
+#     userid = models.IntegerField()
+#     type = models.IntegerField()
+#     agentkey = models.CharField(max_length=32)
+#     goodsid = models.IntegerField()
+#     goodsitemid = models.IntegerField()
+#     count = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cart'
+#
+#
+# class RbCashaccount(models.Model):
+#     userid = models.IntegerField()
+#     blockedbalance = models.DecimalField(max_digits=10, decimal_places=2)
+#     balance = models.DecimalField(max_digits=10, decimal_places=2)
+#     status = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     actdateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount'
+#
+#
+# class RbCashaccountBank(models.Model):
+#     name = models.CharField(max_length=64)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount_bank'
+#
+#
+# class RbCashaccountCard(models.Model):
+#     num = models.CharField(max_length=20)
+#     name = models.CharField(max_length=64)
+#     userid = models.IntegerField()
+#     bankid = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount_card'
+#
+#
+# class RbCashaccountCashlog(models.Model):
+#     accountid = models.IntegerField()
+#     userid = models.IntegerField()
+#     amount = models.DecimalField(max_digits=9, decimal_places=2)
+#     name = models.CharField(max_length=64)
+#     num = models.CharField(max_length=20)
+#     bankname = models.CharField(max_length=64)
+#     note = models.CharField(max_length=1024)
+#     actionuserid = models.IntegerField()
+#     actionusername = models.CharField(max_length=32)
+#     applydateline = models.IntegerField()
+#     actiondateline = models.IntegerField()
+#     actionnote = models.CharField(max_length=1024)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount_cashlog'
+#
+#
+# class RbCashaccountChargelog(models.Model):
+#     paycode = models.CharField(max_length=32)
+#     paytype = models.CharField(max_length=16)
+#     accountid = models.IntegerField()
+#     userid = models.IntegerField()
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     fee = models.DecimalField(max_digits=11, decimal_places=2)
+#     orderinfo = models.TextField(blank=True, null=True)
+#     callback = models.TextField(blank=True, null=True)
+#     subject = models.CharField(max_length=128)
+#     dateline = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount_chargelog'
+#
+#
+# class RbCashaccountLog(models.Model):
+#     payid = models.IntegerField()
+#     cashid = models.IntegerField()
+#     chargeid = models.IntegerField()
+#     type = models.CharField(max_length=16)
+#     method = models.CharField(max_length=64)
+#     accountid = models.IntegerField()
+#     dealaccountid = models.IntegerField()
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     balance = models.DecimalField(max_digits=10, decimal_places=2)
+#     title = models.CharField(max_length=64)
+#     note = models.CharField(max_length=128)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount_log'
+#
+#
+# class RbCashaccountPay(models.Model):
+#     accountid = models.IntegerField()
+#     userid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     note = models.CharField(max_length=512)
+#     amount = models.DecimalField(max_digits=9, decimal_places=2)
+#     adddateline = models.IntegerField()
+#     donedateline = models.IntegerField()
+#     status = models.IntegerField(blank=True, null=True)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cashaccount_pay'
+#
+#
+# class RbClub(models.Model):
+#     type = models.CharField(max_length=64)
+#     userid = models.IntegerField()
+#     name = models.CharField(max_length=64)
+#     sname = models.CharField(max_length=64)
+#     des = models.CharField(max_length=256)
+#     logo_l = models.CharField(max_length=128)
+#     logo_m = models.CharField(max_length=128)
+#     logo_s = models.CharField(max_length=128)
+#     banner = models.CharField(max_length=128)
+#     content = models.TextField()
+#     membercount = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_club'
+#
+#
+# class RbClubUser(models.Model):
+#     userid = models.IntegerField()
+#     roleid = models.IntegerField()
+#     clubid = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     credit = models.IntegerField()
+#     level = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_club_user'
+#
+#
+# class RbClubUserRole(models.Model):
+#     clubid = models.IntegerField()
+#     rolename = models.CharField(max_length=64)
+#     type = models.CharField(max_length=64)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_club_user_role'
+#
+#
+# class RbCmsArticle(models.Model):
+#     userid = models.IntegerField()
+#     catid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     content = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     style = models.CharField(max_length=128)
+#     adddateline = models.IntegerField()
+#     editdateline = models.IntegerField()
+#     postdateline = models.IntegerField()
+#     jsondata = models.TextField()
+#     slidepic = models.TextField()
+#     views = models.IntegerField()
+#     pic = models.CharField(max_length=128)
+#     author = models.CharField(max_length=64)
+#     tpl = models.CharField(max_length=64)
+#     url = models.CharField(max_length=128)
+#     rank = models.IntegerField()
+#     xflag = models.IntegerField()
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cms_article'
+#
+#
+# class RbCmsCat(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     ename = models.CharField(max_length=128)
+#     content = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     tpl = models.CharField(max_length=64)
+#     url = models.CharField(max_length=128)
+#     rank = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     contentcount = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cms_cat'
+#
+#
+# class RbCmsQuestion(models.Model):
+#     contentid = models.IntegerField()
+#     content = models.TextField()
+#     itemdata = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     solution = models.CharField(max_length=8)
+#     adddateline = models.IntegerField()
+#     views = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cms_question'
+#
+#
+# class RbCmsQuestionanswer(models.Model):
+#     contentid = models.IntegerField()
+#     questionid = models.IntegerField()
+#     solution = models.CharField(max_length=8)
+#     userid = models.IntegerField()
+#     iserror = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_cms_questionanswer'
+#
+#
+# class RbComment(models.Model):
+#     appname = models.CharField(max_length=64)
+#     appaction = models.CharField(max_length=64)
+#     appobjectid = models.CharField(max_length=64)
+#     userid = models.IntegerField()
+#     type = models.CharField(max_length=64)
+#     content = models.CharField(max_length=256)
+#     slidepic = models.TextField()
+#     dateline = models.IntegerField()
+#     tocommentid = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_comment'
+#
+#
+# class RbCommentAtuser(models.Model):
+#     commentid = models.IntegerField()
+#     userid = models.IntegerField()
+#     adddateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_comment_atuser'
+#
+#
+# class RbConfig(models.Model):
+#     type = models.CharField(max_length=64)
+#     key = models.CharField(unique=True, max_length=64)
+#     name = models.CharField(max_length=64)
+#     value = models.TextField()
+#     note = models.CharField(max_length=128)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_config'
+#
+#
+# class RbContentmodel(models.Model):
+#     appname = models.CharField(max_length=64)
+#     contentmodel = models.CharField(max_length=64)
+#     name = models.CharField(max_length=64)
+#     suffix = models.CharField(max_length=64)
+#     note = models.CharField(max_length=256)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_contentmodel'
+#
+#
+# class RbContentmodelFields(models.Model):
+#     name = models.CharField(max_length=64)
+#     label = models.CharField(max_length=64)
+#     message = models.CharField(max_length=128)
+#     modelid = models.IntegerField()
+#     default = models.CharField(max_length=256)
+#     validate = models.CharField(max_length=1024)
+#     indextype = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_contentmodel_fields'
+#
+#
+# class RbDays(models.Model):
+#     userid = models.IntegerField()
+#     date = models.IntegerField()
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_days'
+#
+#
+# class RbEmailCode(models.Model):
+#     userid = models.IntegerField(primary_key=True)
+#     type = models.CharField(max_length=64)
+#     code = models.CharField(max_length=32)
+#     dateline = models.IntegerField()
+#     second = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_email_code'
+#
+#
+# class RbEmailLog(models.Model):
+#     tplid = models.IntegerField()
+#     subject = models.CharField(max_length=256)
+#     content = models.TextField()
+#     toname = models.CharField(max_length=64)
+#     toemail = models.CharField(max_length=64)
+#     fromemail = models.CharField(max_length=64)
+#     dateline = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_email_log'
+#
+#
+# class RbEmailTpl(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     title = models.CharField(max_length=128)
+#     subject = models.CharField(max_length=128)
+#     content = models.TextField()
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_email_tpl'
+#
+#
+# class RbEvent(models.Model):
+#     userid = models.IntegerField()
+#     clubid = models.IntegerField()
+#     type = models.CharField(max_length=64)
+#     title = models.CharField(max_length=128)
+#     des = models.CharField(max_length=256)
+#     content = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     attendstartdateline = models.IntegerField()
+#     attendenddateline = models.IntegerField()
+#     livestartdateline = models.IntegerField()
+#     liveenddateline = models.IntegerField()
+#     attendcount = models.IntegerField()
+#     commentcount = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_event'
+#
+#
+# class RbEventUser(models.Model):
+#     eventid = models.IntegerField()
+#     userid = models.IntegerField()
+#     dateline = models.IntegerField()
+#     note = models.CharField(max_length=256)
+#     status = models.IntegerField(blank=True, null=True)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_event_user'
+#
+#
+# class RbFieldtype(models.Model):
+#     type = models.CharField(max_length=64)
+#     rule = models.TextField()
+#     name = models.CharField(max_length=64)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_fieldtype'
+#
+#
+# class RbFreeform(models.Model):
+#     type = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sex = models.CharField(max_length=16)
+#     phone = models.CharField(max_length=16)
+#     telephone = models.CharField(max_length=16)
+#     fax = models.CharField(max_length=16)
+#     qq = models.CharField(max_length=16)
+#     email = models.CharField(max_length=64)
+#     userid = models.IntegerField()
+#     city = models.CharField(max_length=128)
+#     address = models.CharField(max_length=256)
+#     age = models.CharField(max_length=16)
+#     content = models.TextField()
+#     jsondata = models.TextField()
+#     replayname = models.CharField(max_length=64)
+#     replaycontent = models.TextField()
+#     replaydateline = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_freeform'
+#
+#
+# class RbGoods(models.Model):
+#     userid = models.IntegerField()
+#     catid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     content = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     adddateline = models.IntegerField()
+#     editdateline = models.IntegerField()
+#     postdateline = models.IntegerField()
+#     jsondata = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     author = models.CharField(max_length=64)
+#     tpl = models.CharField(max_length=64)
+#     url = models.CharField(max_length=128)
+#     rank = models.IntegerField()
+#     xflag = models.IntegerField()
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     payprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     price = models.DecimalField(max_digits=9, decimal_places=2)
+#     oldprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     ordercount = models.IntegerField()
+#     count = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_goods'
+#
+#
+# class RbGoodsCat(models.Model):
+#     parentid = models.IntegerField()
+#     modelid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     ename = models.CharField(max_length=128)
+#     pic = models.CharField(max_length=128)
+#     tpl = models.CharField(max_length=64)
+#     url = models.CharField(max_length=128)
+#     rank = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     goodscount = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_goods_cat'
+#
+#
+# class RbGoodsItem(models.Model):
+#     index1 = models.CharField(max_length=64)
+#     index2 = models.CharField(max_length=64)
+#     index3 = models.CharField(max_length=64)
+#     goodsid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     sildepic = models.TextField()
+#     des = models.CharField(max_length=256)
+#     payprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     price = models.DecimalField(max_digits=9, decimal_places=2)
+#     rank = models.IntegerField()
+#     count = models.IntegerField()
+#     ordercount = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_goods_item'
+#
+#
+# class RbHotel(models.Model):
+#     xid = models.IntegerField()
+#     userid = models.IntegerField()
+#     catid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     content = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     style = models.CharField(max_length=128)
+#     lxphone = models.CharField(max_length=16)
+#     price = models.DecimalField(max_digits=9, decimal_places=2)
+#     address = models.CharField(max_length=128)
+#     tuidingdes = models.CharField(max_length=128)
+#     adddateline = models.IntegerField()
+#     editdateline = models.IntegerField()
+#     postdateline = models.IntegerField()
+#     slidepic = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     lng = models.DecimalField(max_digits=10, decimal_places=7)
+#     lat = models.DecimalField(max_digits=10, decimal_places=7)
+#     labelids = models.CharField(max_length=64)
+#     unlabelids = models.CharField(max_length=64)
+#     author = models.CharField(max_length=64)
+#     rank = models.IntegerField()
+#     views = models.IntegerField()
+#     comment = models.IntegerField()
+#     score = models.IntegerField()
+#     ordercount = models.IntegerField()
+#     xflag = models.IntegerField()
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_hotel'
+#
+#
+# class RbHotelCat(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_hotel_cat'
+#
+#
+# class RbHotelDatemap(models.Model):
+#     serviceid = models.IntegerField()
+#     date = models.IntegerField()
+#     childprice = models.DecimalField(max_digits=9, decimal_places=1)
+#     adultprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     daydifprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     num = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_hotel_datemap'
+#
+#
+# class RbHotelItem(models.Model):
+#     conday = models.IntegerField()
+#     contentid = models.IntegerField()
+#     name = models.CharField(max_length=64)
+#     des = models.CharField(max_length=256)
+#     tips = models.CharField(max_length=1024)
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_hotel_item'
+#
+#
+# class RbHotelLabel(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_hotel_label'
+#
+#
+# class RbLog(models.Model):
+#     userid = models.IntegerField()
+#     group = models.CharField(max_length=255)
+#     module = models.CharField(max_length=255)
+#     action = models.CharField(max_length=255)
+#     parms = models.TextField(blank=True, null=True)
+#     dateline = models.IntegerField()
+#     url = models.CharField(max_length=1024)
+#     ip = models.CharField(max_length=23)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_log'
+#
+#
+# class RbMarket(models.Model):
+#     xid = models.IntegerField()
+#     userid = models.IntegerField()
+#     catid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     content = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     style = models.CharField(max_length=128)
+#     lxphone = models.CharField(max_length=16)
+#     price = models.DecimalField(max_digits=9, decimal_places=2)
+#     adddateline = models.IntegerField()
+#     editdateline = models.IntegerField()
+#     postdateline = models.IntegerField()
+#     slidepic = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     author = models.CharField(max_length=64)
+#     rank = models.IntegerField()
+#     views = models.IntegerField()
+#     comment = models.IntegerField()
+#     score = models.IntegerField()
+#     ordercount = models.IntegerField()
+#     count = models.IntegerField()
+#     xflag = models.IntegerField()
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_market'
+#
+#
+# class RbMarketArea(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_market_area'
+#
+#
+# class RbMarketCat(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_market_cat'
+#
+#
+# class RbMarketSchool(models.Model):
+#     areaid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     phone = models.CharField(max_length=32)
+#     email = models.CharField(max_length=64)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_market_school'
+#
+#
+# class RbMessage(models.Model):
+#     type = models.CharField(max_length=64)
+#     fromuserid = models.IntegerField()
+#     touserid = models.IntegerField()
+#     content = models.TextField()
+#     dateline = models.IntegerField()
+#     isread = models.IntegerField()
+#     toweb = models.IntegerField()
+#     toandroid = models.IntegerField()
+#     toiphone = models.IntegerField()
+#     appaction = models.CharField(max_length=64)
+#     appactionid = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_message'
+#
+#
+# class RbMessageTpl(models.Model):
+#     title = models.CharField(max_length=128)
+#     content = models.CharField(max_length=1024)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_message_tpl'
+#
+#
+# class RbOrder(models.Model):
+#     payid = models.IntegerField()
+#     code = models.CharField(max_length=16)
+#     type = models.CharField(max_length=32)
+#     title = models.CharField(max_length=128)
+#     buyerid = models.IntegerField()
+#     sellerid = models.IntegerField()
+#     orderprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     payedprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     discountprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     payprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     refundprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     buyernote = models.CharField(max_length=256)
+#     kindcount = models.IntegerField()
+#     count = models.IntegerField()
+#     schoolid = models.IntegerField()
+#     sellernote = models.CharField(max_length=256)
+#     adddateline = models.IntegerField()
+#     actdateline = models.IntegerField()
+#     orderstatus = models.IntegerField()
+#     paystatus = models.IntegerField()
+#     servicestatus = models.IntegerField()
+#     buyername = models.CharField(max_length=64)
+#     buyerphone = models.CharField(max_length=11)
+#     buyeraddress = models.CharField(max_length=128)
+#     orderinfo = models.TextField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_order'
+#
+#
+# class RbOrderItem(models.Model):
+#     orderid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     goodsid = models.IntegerField()
+#     goodsitemid = models.IntegerField()
+#     singleprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     count = models.IntegerField()
+#     subtotalprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_order_item'
+#
+#
+# class RbOrderItemHotel(models.Model):
+#     orderid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     goodsid = models.IntegerField()
+#     goodsitemid = models.IntegerField()
+#     startdate = models.IntegerField()
+#     enddate = models.IntegerField()
+#     singleprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     count = models.IntegerField()
+#     subtotalprice = models.DecimalField(max_digits=9, decimal_places=2)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_order_item_hotel'
+#
+#
+# class RbOrderLog(models.Model):
+#     userid = models.IntegerField()
+#     orderid = models.IntegerField()
+#     username = models.CharField(max_length=64)
+#     acttype = models.CharField(max_length=32)
+#     orderstatus = models.IntegerField()
+#     paystatus = models.IntegerField()
+#     servicestatus = models.IntegerField()
+#     note = models.CharField(max_length=256)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_order_log'
+#
+#
+# class RbShop(models.Model):
+#     xid = models.IntegerField()
+#     userid = models.IntegerField()
+#     catid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     content = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     style = models.CharField(max_length=128)
+#     lxphone = models.CharField(max_length=16)
+#     price = models.DecimalField(max_digits=9, decimal_places=2)
+#     adddateline = models.IntegerField()
+#     editdateline = models.IntegerField()
+#     postdateline = models.IntegerField()
+#     slidepic = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     author = models.CharField(max_length=64)
+#     rank = models.IntegerField()
+#     views = models.IntegerField()
+#     comment = models.IntegerField()
+#     score = models.IntegerField()
+#     count = models.IntegerField()
+#     ordercount = models.IntegerField()
+#     xflag = models.IntegerField()
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_shop'
+#
+#
+# class RbShopCat(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     pic = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_shop_cat'
+#
+#
+# class RbShuoshuo(models.Model):
+#     type = models.CharField(max_length=64)
+#     userid = models.IntegerField()
+#     clubid = models.IntegerField()
+#     content = models.CharField(max_length=256)
+#     slidepic = models.CharField(max_length=1024)
+#     fromtype = models.CharField(max_length=64)
+#     zancount = models.IntegerField()
+#     commentcount = models.IntegerField()
+#     adddateline = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_shuoshuo'
+#
+#
+# class RbShuoshuoAtuser(models.Model):
+#     shuoid = models.IntegerField()
+#     userid = models.IntegerField()
+#     adddateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_shuoshuo_atuser'
+#
+#
+# class RbSmsCode(models.Model):
+#     userid = models.IntegerField(primary_key=True)
+#     type = models.CharField(max_length=64)
+#     code = models.CharField(max_length=32)
+#     dateline = models.IntegerField()
+#     second = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_sms_code'
+#
+#
+# class RbSmsLog(models.Model):
+#     tplid = models.IntegerField()
+#     content = models.CharField(max_length=1024)
+#     tophone = models.TextField()
+#     dateline = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_sms_log'
+#
+#
+# class RbSmsTpl(models.Model):
+#     title = models.CharField(max_length=128)
+#     content = models.CharField(max_length=1024)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_sms_tpl'
+#
+#
+# class RbSmsinfo(models.Model):
+#     phone = models.CharField(max_length=11)
+#     code = models.CharField(max_length=6)
+#     content = models.TextField()
+#     date = models.IntegerField()
+#     type = models.IntegerField()
+#     action = models.IntegerField()
+#     valuedate = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_smsinfo'
+#
+#
+# class RbSmsmessage(models.Model):
+#     name = models.CharField(max_length=128)
+#     checked = models.IntegerField()
+#     message = models.CharField(max_length=256)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_smsmessage'
+#
+#
+# class Community(models.Model):
+#     name = models.CharField(max_length=64)
+#     province = models.CharField(max_length=16)
+#     city = models.CharField(max_length=16)
+#     area = models.CharField(max_length=16)
+#     address = models.CharField(max_length=256)
+#     create_time = models.DateTimeField(auto_now_add=True)
+#
+#
+# class User(models.Model):
+#     name = models.CharField(max_length=64)
+#     nickname = models.CharField(max_length=64)
+#     pswd = models.CharField(max_length=32)
+#     type = models.CharField(max_length=16)
+#     roleid = models.IntegerField()
+#     community = models.ForeignKey(Community, blank=True, null=True, on_delete=None)
+#     email = models.CharField(max_length=64, blank=True, null=True)
+#     phone = models.CharField(max_length=11, blank=True, null=True)
+#     yongjin = models.IntegerField()
+#     sex = models.IntegerField()
+#     signature = models.CharField(max_length=128)
+#     create_time = models.DateTimeField(auto_now_add=True)
+#     addfrom = models.CharField(max_length=16)
+#     logindateline = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user'
+#
+#
+# class RbUserAddress(models.Model):
+#     userid = models.IntegerField()
+#     sex = models.IntegerField()
+#     lxname = models.CharField(max_length=64)
+#     lxphone = models.CharField(max_length=64)
+#     lxaddress = models.CharField(max_length=256)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_address'
+#
+#
+# class RbUserCreditLog(models.Model):
+#     userid = models.IntegerField()
+#     value = models.IntegerField()
+#     action = models.CharField(max_length=64)
+#     note = models.CharField(max_length=256)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_credit_log'
+#
+#
+# class RbUserExpLevel(models.Model):
+#     name = models.IntegerField()
+#     ico = models.CharField(max_length=128)
+#     expneq = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_exp_level'
+#
+#
+# class RbUserExpLog(models.Model):
+#     userid = models.IntegerField()
+#     value = models.IntegerField()
+#     action = models.CharField(max_length=64)
+#     note = models.CharField(max_length=256)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_exp_log'
+#
+#
+# class RbUserFans(models.Model):
+#     userid = models.IntegerField()
+#     fansuserid = models.IntegerField()
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_fans'
+#
+#
+# class RbUserGoldLog(models.Model):
+#     userid = models.IntegerField()
+#     value = models.IntegerField()
+#     action = models.CharField(max_length=64)
+#     note = models.CharField(max_length=256)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_gold_log'
+#
+#
+# class RbUserRole(models.Model):
+#     id = models.IntegerField(primary_key=True)
+#     type = models.IntegerField()
+#     name = models.CharField(max_length=64)
+#     note = models.CharField(max_length=256)
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_role'
+#
+#
+# class RbUserToken(models.Model):
+#     userid = models.IntegerField()
+#     expire = models.IntegerField()
+#     token = models.CharField(max_length=32)
+#     agent = models.CharField(max_length=16)
+#     ip = models.CharField(max_length=15)
+#     dateline = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_user_token'
+#
+#
+# class RbWallet(models.Model):
+#     type = models.IntegerField()
+#     userid = models.IntegerField()
+#     amount = models.IntegerField()
+#     minamount = models.IntegerField()
+#     startdate = models.IntegerField()
+#     enddate = models.IntegerField()
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_wallet'
+#
+#
+# class RbYmarket(models.Model):
+#     xid = models.IntegerField()
+#     userid = models.IntegerField()
+#     catid = models.IntegerField()
+#     title = models.CharField(max_length=128)
+#     content = models.TextField()
+#     stitle = models.CharField(max_length=128)
+#     style = models.CharField(max_length=128)
+#     lxphone = models.CharField(max_length=16)
+#     price = models.DecimalField(max_digits=9, decimal_places=2)
+#     adddateline = models.IntegerField()
+#     editdateline = models.IntegerField()
+#     postdateline = models.IntegerField()
+#     slidepic = models.TextField()
+#     pic = models.CharField(max_length=128)
+#     author = models.CharField(max_length=64)
+#     rank = models.IntegerField()
+#     views = models.IntegerField()
+#     comment = models.IntegerField()
+#     score = models.IntegerField()
+#     ordercount = models.IntegerField()
+#     count = models.IntegerField()
+#     xflag = models.IntegerField()
+#     keywords = models.CharField(max_length=256)
+#     des = models.CharField(max_length=256)
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_ymarket'
+#
+#
+# class RbYmarketCat(models.Model):
+#     parentid = models.IntegerField()
+#     name = models.CharField(max_length=128)
+#     sname = models.CharField(max_length=128)
+#     contentcount = models.IntegerField()
+#     rank = models.IntegerField()
+#     status = models.IntegerField()
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'rb_ymarket_cat'
