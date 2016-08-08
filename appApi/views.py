@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import login
 from django.core.serializers import json
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
@@ -54,7 +53,7 @@ class UserLoginOutView(View, AjaxResponseMixin):
         return self.ajax_response({'msg': u'登出成功'})
 
 
-class UserRegisterView(FormView,AjaxResponseMixin):
+class UserRegisterView(FormView, AjaxResponseMixin):
     http_method_names = ['post']
     form_class =UserRegisterForm
 
@@ -84,7 +83,7 @@ class MobileCodeView(DetailView):
         data = {}
         data["status"]="success"
         data["code"]=code_result
-        return  HttpResponse(json.dumps(data),content_type="application/json")
+        return HttpResponse(json.dumps(data),content_type="application/json")
 
     def get_code(self):
         code_result =""
