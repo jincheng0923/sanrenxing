@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth import login
+from django.core.serializers import json
+from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import DetailView
+
 from commonService.views import AjaxResponseMixin
 from django.views.generic import TemplateView, View, FormView
+import random
 
 from forms import UserLoginForm, UserRegisterForm
 
@@ -50,6 +55,22 @@ class UserRegisterView(FormView,AjaxResponseMixin):
     def form_invalid(self, form):
         self.update_errors(form.errors.popitem()[-1][0])
         return self.ajax_response({})
+
+class MobileCodeView(DetailView):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        code_result =self.get_code()
+        data = {}
+        data["status"]="success"
+        data["code"]=code_result
+        return  HttpResponse(json.dumps(data),content_type="application/json")
+
+    def get_code(self):
+        code_result =""
+        for i in range(6):
+            code_result.append(random.uniform(0, 9));
+        return code_result
 
 
 
