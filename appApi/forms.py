@@ -50,3 +50,41 @@ class UserLoginForm(forms.Form):
 
     def get_user(self):
         return self.user
+
+
+class UserRegisterForm (forms.Form):
+    account = forms.CharField(max_length=20, required=True,
+                              error_messages={
+                                  'required': u'请输入正确手机号',
+                                  'max_length': u'请输入正确手机号',
+                              })
+    code = forms.CharField(min_length=6,max_length=6,required=True,
+                           error_messages={
+                                 'required':u'请输入验证码',
+                                 'min_length':u'验证码格式不正确',
+                                 'max_length':u'验证码格式不正确'
+                           })
+
+    pswd = forms.CharField(min_length=6, required=True,
+                               error_messages={
+                                 'required':u'请输入密码',
+                                 'min_length':u'密码格式不正确',
+                               })
+
+    def clean(self):
+        account = self.cleaned_data.get('account', None);
+        pswd = self.cleaned_data.get('pswd', None)
+
+        if account and pswd:
+            exit_user = User.objects.get(phone=account)
+            if exit_user is None:
+                code = self.cleaned_data['code']
+                pswd = self.cleaned_data['pswd']
+                user = User(phone=account, pswd=pswd)
+                user.save();
+            return self.cleaned_data
+        else:
+            raise forms.ValidationError(
+                self.error_messages['invalid_login'])
+
+
