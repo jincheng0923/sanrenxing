@@ -36,11 +36,11 @@ class UserLoginForm(forms.Form):
             return user
 
     def clean(self):
-        username = self.cleaned_data.get('account', None)
+        phone = self.cleaned_data.get('account', None)
         password = self.cleaned_data.get('password', None)
 
-        if username and password:
-            self.user = authenticate(username=username,
+        if phone and password:
+            self.user = authenticate(phone=phone,
                             password=password)
             if self.user is None:
                 raise forms.ValidationError(
