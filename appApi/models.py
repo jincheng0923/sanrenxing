@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
+import hashlib
 
 from django.db import models
 
@@ -41,6 +42,20 @@ class User(models.Model):
     status = models.CharField(max_length=4)
     faceimg_s = models.CharField(max_length=64)
 
+    def is_authenticated(self):
+        return True
+
+    def hashed_password(self, password=None):
+        if not password:
+            return self.pswd
+        else:
+            salt = "srx_"+ password
+            return hashlib.md5(salt).hexdigest().upper()
+
+    def check_password(self, password):
+        if self.hashed_password(password) == self.pswd:
+            return True
+        return False
 
     class Meta:
         db_table = 'user'
