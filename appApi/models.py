@@ -12,6 +12,9 @@ from django.db import models
 
 
 #
+from django.utils.crypto import salted_hmac
+
+
 class Community(models.Model):
     name = models.CharField(max_length=64)
     province = models.CharField(max_length=16)
@@ -56,6 +59,10 @@ class User(models.Model):
         if self.hashed_password(password) == self.pswd:
             return True
         return False
+
+    def get_session_auth_hash(self):
+        key_salt = "django.contrib.auth.models.AbstractBaseUser.get_session_auth_hash"
+        return salted_hmac(key_salt, self.pswd).hexdigest()
 
     class Meta:
         db_table = 'user'
