@@ -75,15 +75,26 @@ class UserRegisterForm (forms.Form):
         pswd = self.cleaned_data.get('pswd', None)
 
         if account and pswd:
-            exit_user = User.objects.get(phone=account)
-            if exit_user is None:
-                code = self.cleaned_data['code']
-                pswd = self.cleaned_data['pswd']
-                user = User(phone=account, pswd=pswd)
-                user.save();
-            return self.cleaned_data
+            try:
+                exit_user = User.objects.get(phone=account)
+                if exit_user is None:
+                    return self.cleaned_data
+                else:
+                    raise forms.ValidationError(
+                        self.error_messages['invalid_register'])
+            except Exception as err:
+                print(err)
         else:
             raise forms.ValidationError(
-                self.error_messages['invalid_login'])
+                self.error_messages['invalid_register'])
+
+    def save(self):
+        account = self.cleaned_data.get('account', None);
+        code = self.cleaned_data['code']
+        pswd = self.cleaned_data['pswd']
+        user = User(phone=account, pswd=pswd)
+        user.save();
+
+
 
 
