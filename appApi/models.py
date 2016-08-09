@@ -12,6 +12,9 @@ from django.db import models
 
 
 #
+from django.utils.crypto import salted_hmac
+
+
 class Community(models.Model):
     name = models.CharField(max_length=64)
     province = models.CharField(max_length=16)
@@ -57,16 +60,29 @@ class User(models.Model):
             return True
         return False
 
+    def get_session_auth_hash(self):
+        key_salt = "django.contrib.auth.models.AbstractBaseUser.get_session_auth_hash"
+        return salted_hmac(key_salt, self.pswd).hexdigest()
+
     class Meta:
         db_table = 'user'
 
 
 class Smsmessage(models.Model):
-    name = models.CharField(max_length=128)
-    checked = models.IntegerField()
-    message = models.CharField(max_length=256)
+    phone = models.CharField(max_length=16)
+    content = models.CharField(max_length=256)
+    source = models.CharField(max_length=32, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=4)
 
     class Meta:
         db_table = 'smsmessage'
+
+class Config(models.Model):
+    android_version = models.CharField(max_length=128)
+    android_url = models.CharField(max_length=128)
+    android_notes = models.CharField(max_length=128)
+    android_radio = models.IntegerField()
+
+    class Meta:
+        db_table = 'config'
