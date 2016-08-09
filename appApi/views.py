@@ -56,9 +56,9 @@ class UserLoginOutView(View, AjaxResponseMixin):
 
 
 class UserRegisterView(FormView, AjaxResponseMixin):
+
     http_method_names = ['post']
     form_class =UserRegisterForm
-
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
