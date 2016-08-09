@@ -77,7 +77,7 @@ class UserRegisterView(FormView, AjaxResponseMixin):
         self.update_errors(form.errors.popitem()[-1][0])
         return self.ajax_response({})
 
-class MobileCodeView(DetailView):
+class MobileCodeView(View, AjaxResponseMixin):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):

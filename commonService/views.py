@@ -1,7 +1,9 @@
 #coding:utf-8
 from functools import wraps
+import re
 
 from django.http.response import HttpResponse, JsonResponse
+import requests
 
 
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -37,6 +39,7 @@ class AjaxResponseMixin(object):
 
 
 from appApi.models import User
+from appApi.models import Smsmessage
 
 class MyCustomBackend(object):
 
@@ -66,3 +69,33 @@ def ajax_login_required(func):
             }
             return JsonResponse(to_return)
     return verify_login
+
+
+def send_sms(phone, content, source=None):
+
+    url = 'http://120.25.147.10:8002/sms.aspx'
+    params = {
+        'userid': 843,
+        'account': 'SEE',
+        'password': '456789',
+        'mobile': phone,
+        'content': content,
+        'sendTime': '',
+        'action': 'send',
+        'extno': ''
+    }
+
+    req = requests.get(url, params)
+    if req.status_code == 200:
+        pattern = re.compile(r'Success55')
+        match = pattern.search(req.content)
+        if match:
+            sm = Smsmessage.objects.create(phone=phone, content=content, status='S', source=source)
+            return True
+        else:
+            sm = Smsmessage.objects.create(phone=phone, content=content, status='F', source=source)
+            return False
+    else:
+        sm = Smsmessage.objects.create(phone=phone, content=content, status='F', source=source)
+        return False
+

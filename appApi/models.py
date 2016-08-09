@@ -69,9 +69,9 @@ class User(models.Model):
 
 
 class Smsmessage(models.Model):
-    name = models.CharField(max_length=128)
-    checked = models.IntegerField()
-    message = models.CharField(max_length=256)
+    phone = models.CharField(max_length=16)
+    content = models.CharField(max_length=256)
+    source = models.CharField(max_length=32, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=4)
 
