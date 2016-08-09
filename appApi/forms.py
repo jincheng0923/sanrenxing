@@ -70,6 +70,15 @@ class UserRegisterForm (forms.Form):
                                  'min_length':u'密码格式不正确',
                                })
 
+
+    def clean_mobilecode(self):
+        code = self.request.session.get('code')
+        mobilecode = self.changed_data.get('mobilecode', None)
+
+        if code != mobilecode :
+            raise forms.ValidationError(
+                self.error_messages['invalid_register'])
+
     def clean(self):
         account = self.cleaned_data.get('account', None);
         pswd = self.cleaned_data.get('pswd', None)
