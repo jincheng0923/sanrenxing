@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from django.core import serializers
 from django.core.serializers import json
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
 
+from appApi.models import Config
 from commonService.views import AjaxResponseMixin
 from django.views.generic import TemplateView, View, FormView
 from commonService.views import ajax_login_required
@@ -88,8 +90,26 @@ class MobileCodeView(DetailView):
     def get_code(self):
         code_result =""
         for i in range(6):
-            code_result.append(random.uniform(0, 9));
+            code_result.append(random.uniform(0, 9))
         return code_result
+
+
+class AppConfigView(View, AjaxResponseMixin):
+
+     def  get(self, request, *args, **kwargs):
+           print 'hhh'
+           config = Config.objects.all()[0]
+           data_result = {
+               'android_version':config.android_version,
+               'android_url' : config.android_url,
+               'android_notes' : config.android_notes,
+               'android_radio' : config.android_radio
+           }
+           data = {
+               'data' : data_result
+           }
+           return self.ajax_response(data)
+
 
 
 

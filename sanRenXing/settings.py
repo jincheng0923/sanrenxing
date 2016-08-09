@@ -129,3 +129,7 @@ STATIC_URL = '/static/'
 AUTHENTICATION_BACKENDS = (
         'commonService.views.MyCustomBackend',
 )
+
+SERIALIZATION_MODULES = {
+    "geojson": "django.contrib.gis.serializers.geojson",
+ }

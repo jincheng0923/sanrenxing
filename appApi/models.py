@@ -77,3 +77,12 @@ class Smsmessage(models.Model):
 
     class Meta:
         db_table = 'smsmessage'
+
+class Config(models.Model):
+    android_version = models.CharField(max_length=128)
+    android_url = models.CharField(max_length=128)
+    android_notes = models.CharField(max_length=128)
+    android_radio = models.IntegerField()
+
+    class Meta:
+        db_table = 'config'
