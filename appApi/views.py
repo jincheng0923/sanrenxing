@@ -81,9 +81,9 @@ class MobileCodeView(View, AjaxResponseMixin):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        phone = request.GET.get('phone', None)
+        phone = request.GET.get('phone')
         type = request.GET.get('type', 1)
-        if phone is not None :
+        if phone:
             code_result = self.get_code()
             content = u'【小区超市】您的验证码是' + code_result
             is_send = send_sms(phone, content, 'test')
@@ -97,9 +97,9 @@ class MobileCodeView(View, AjaxResponseMixin):
                 data = {
                     'code': code_result
                 }
-                return self.update_errors(u'验证码发送失败', None)
+                return self.update_errors(u'验证码发送失败')
         else :
-            return self.update_errors(u'非法请求', None)
+            return self.update_errors(u'非法请求')
 
 
 
