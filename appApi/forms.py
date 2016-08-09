@@ -52,6 +52,11 @@ class UserLoginForm(forms.Form):
 
 
 class UserRegisterForm (forms.Form):
+    error_messages = {
+        'invalid_register': u'用户已存在',
+        'invalid_code_error': u'验证码错误',
+    }
+
     account = forms.CharField(max_length=20, required=True,
                               error_messages={
                                   'required': u'请输入正确手机号',
@@ -73,11 +78,11 @@ class UserRegisterForm (forms.Form):
 
     def clean_mobilecode(self):
         code = self.request.session.get('code')
-        mobilecode = self.changed_data.get('mobilecode', None)
-
+        mobilecode = self.changed_data.get('mobilecode')
+        print u'----------'+mobilecode
         if code != mobilecode :
             raise forms.ValidationError(
-                self.error_messages['invalid_register'])
+                self.error_messages['invalid_code_error'])
 
     def clean(self):
         account = self.cleaned_data.get('account', None);
@@ -93,16 +98,70 @@ class UserRegisterForm (forms.Form):
                         self.error_messages['invalid_register'])
             except Exception as err:
                 print(err)
+
+    def save(self):
+        account = self.cleaned_data.get('account')
+        pswd = self.cleaned_data['pswd']
+        user = User(phone=account, pswd=pswd)
+        user.save()
+
+class UserResetPswdForm(forms.form):
+    error_messages = {
+        'invalid_code_error': u'验证码错误',
+        'invalid_user_not_exit': u'用户不存在',
+        'invalid_error': u'账户密码不能为空',
+    }
+
+    account = forms.CharField(max_length=20, required=True,
+                              error_messages={
+                                  'required': u'请输入正确手机号',
+                                  'max_length': u'请输入正确手机号',
+                              })
+    code = forms.CharField(min_length=6, max_length=6, required=True,
+                           error_messages={
+                               'required': u'请输入验证码',
+                               'min_length': u'验证码格式不正确',
+                               'max_length': u'验证码格式不正确'
+                           })
+
+    pswd = forms.CharField(min_length=6, required=True,
+                           error_messages={
+                               'required': u'请输入密码',
+                               'min_length': u'密码格式不正确',
+                           })
+
+    def clean_mobilecode(self):
+        code = self.request.session.get('code')
+        mobilecode = self.changed_data.get('mobilecode')
+        print u'----------' + mobilecode
+        if code != mobilecode:
+            raise forms.ValidationError(
+                self.error_messages['invalid_code_error'])
+
+    def clean(self):
+        account = self.cleaned_data.get('account')
+        pswd = self.cleaned_data.get('pswd')
+
+        if account and pswd:
+            try:
+                exit_user = User.objects.get(phone=account)
+                if exit_user :
+                    return self.cleaned_data
+                else:
+                    raise forms.ValidationError(
+                        self.error_messages['invalid_user_not_exit'])
+            except Exception as err:
+                print(err)
         else:
             raise forms.ValidationError(
                 self.error_messages['invalid_register'])
 
-    def save(self):
-        account = self.cleaned_data.get('account', None);
-        code = self.cleaned_data['code']
+    def update(self):
+        account = self.cleaned_data.get('account')
         pswd = self.cleaned_data['pswd']
-        user = User(phone=account, pswd=pswd)
-        user.save();
+        user = User(pswd=pswd)
+        user.save()
+
 
 
 
