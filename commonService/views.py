@@ -8,11 +8,11 @@ HASH_SESSION_KEY = '_auth_user_hash'
 SESSION_KEY = '_auth_user_id'
 class AjaxResponseMixin(object):
 
-    status = 'success'
+    status = 'true'
     error_messages = 'message'
 
     def update_errors(self, msg, errors=None):
-        self.status = 'error'
+        self.status = 'false'
         if errors is not None:
             self.error_messages = errors
         else:
@@ -20,7 +20,7 @@ class AjaxResponseMixin(object):
 
     def render_to_json(self, data):
         context = {
-            'status': self.status,
+            'success': self.status,
             'msg': self.error_messages,
         }
         context.update(data)

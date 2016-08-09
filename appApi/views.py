@@ -82,10 +82,11 @@ class MobileCodeView(DetailView):
 
     def get(self, request, *args, **kwargs):
         code_result =self.get_code()
-        data = {}
-        data["status"]="success"
-        data["code"]=code_result
-        return HttpResponse(json.dumps(data),content_type="application/json")
+        request.session["code"]= code_result
+        data = {
+            'code' : code_result
+        }
+        return self.ajax_response(data)
 
     def get_code(self):
         code_result =""
