@@ -1,9 +1,9 @@
 #coding:utf-8
 from functools import wraps
 import re
+import requests
 
 from django.http.response import HttpResponse, JsonResponse
-import requests
 
 
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -87,8 +87,9 @@ def send_sms(phone, content, source=None):
 
     req = requests.get(url, params)
     if req.status_code == 200:
-        pattern = re.compile(r'Success55')
+        pattern = re.compile(r'Success')
         match = pattern.search(req.content)
+
         if match:
             sm = Smsmessage.objects.create(phone=phone, content=content, status='S', source=source)
             return True

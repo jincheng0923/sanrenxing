@@ -11,6 +11,6 @@ urlpatterns  = (
     url(r'^user/login/$',UserLoginView.as_view()),
     url(r'^user/login_out/$',UserLoginOutView.as_view()),
     url(r'^user/register/$', UserRegisterView.as_view()),
-    url(r'^user/getcode/$', MobileCodeView.as_view()),
-    url(r'^user/updateconfig/$', AppConfigView.as_view()),
+    url(r'^user/mobilecode/$', MobileCodeView.as_view()),
+    url(r'^index/updateconfig/$', AppConfigView.as_view()),
     )

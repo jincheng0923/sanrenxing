@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
 
 from appApi.models import Config
-from commonService.views import AjaxResponseMixin
+from commonService.views import AjaxResponseMixin, send_sms
 from django.views.generic import TemplateView, View, FormView
 from commonService.views import ajax_login_required
 import random
@@ -81,17 +81,32 @@ class MobileCodeView(View, AjaxResponseMixin):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        code_result =self.get_code()
-        request.session["code"]= code_result
-        data = {
-            'code' : code_result
-        }
-        return self.ajax_response(data)
+        phone = request.GET.get('phone', None)
+        type = request.GET.get('type', 1)
+        if phone is not None :
+            code_result = self.get_code()
+            content = u'【小区超市】您的验证码是' + code_result
+            is_send = send_sms(phone, content, 'test')
+            if is_send:
+                request.session["code"] = code_result
+                data = {
+                    'code': code_result
+                }
+                return self.ajax_response(data)
+            else:
+                data = {
+                    'code': code_result
+                }
+                return self.update_errors(u'验证码发送失败', None)
+        else :
+            return self.update_errors(u'非法请求', None)
+
+
 
     def get_code(self):
         code_result =""
         for i in range(6):
-            code_result.append(random.uniform(0, 9))
+            code_result=code_result+(str)(random.randint(0, 9))
         return code_result
 
 
