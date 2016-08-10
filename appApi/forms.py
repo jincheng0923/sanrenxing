@@ -57,12 +57,12 @@ class UserRegisterForm (forms.Form):
         'invalid_code_error': u'验证码错误',
     }
 
-    account = forms.CharField(max_length=20, required=True,
-                              error_messages={
-                                  'required': u'请输入正确手机号',
-                                  'max_length': u'请输入正确手机号',
-                              })
-    code = forms.CharField(min_length=6,max_length=6,required=True,
+    phone = forms.CharField(max_length=20, required=True,
+                            error_messages={
+                                  'required': u'请输入正确手机号1',
+                                  'max_length': u'请输入正确手机号2',
+                            })
+    mobilecode = forms.CharField(min_length=6,max_length=6,required=True,
                            error_messages={
                                  'required':u'请输入验证码',
                                  'min_length':u'验证码格式不正确',
@@ -70,11 +70,14 @@ class UserRegisterForm (forms.Form):
                            })
 
     pswd = forms.CharField(min_length=6, required=True,
-                               error_messages={
+                            error_messages={
                                  'required':u'请输入密码',
                                  'min_length':u'密码格式不正确',
-                               })
+                            })
 
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        return super(self.__class__, self).__init__(*args, **kwargs)
 
     def clean_mobilecode(self):
         code = self.request.session.get('code')
@@ -85,12 +88,12 @@ class UserRegisterForm (forms.Form):
                 self.error_messages['invalid_code_error'])
 
     def clean(self):
-        account = self.cleaned_data.get('account', None);
+        phone = self.cleaned_data.get('phone', None);
         pswd = self.cleaned_data.get('pswd', None)
 
-        if account and pswd:
+        if phone and pswd:
             try:
-                exit_user = User.objects.get(phone=account)
+                exit_user = User.objects.get(phone=phone)
                 if exit_user is None:
                     return self.cleaned_data
                 else:
@@ -105,7 +108,7 @@ class UserRegisterForm (forms.Form):
         user = User(phone=account, pswd=pswd)
         user.save()
 
-class UserResetPswdForm(forms.form):
+class UserResetPswdForm(forms.Form):
     error_messages = {
         'invalid_code_error': u'验证码错误',
         'invalid_user_not_exit': u'用户不存在',
