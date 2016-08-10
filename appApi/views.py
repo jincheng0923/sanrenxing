@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, View, FormView
 from commonService.views import ajax_login_required
 import random
 
-from forms import UserLoginForm, UserRegisterForm
+from forms import UserLoginForm, UserRegisterForm, UserResetPswdForm
 
 SESSION_KEY = '_auth_user_id'
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -79,7 +79,6 @@ class UserRegisterView(FormView, AjaxResponseMixin):
 
 class MobileCodeView(View, AjaxResponseMixin):
     http_method_names = ['get']
-
     def get(self, request, *args, **kwargs):
         phone = request.GET.get('phone')
         type = request.GET.get('type', 1)
@@ -108,6 +107,27 @@ class MobileCodeView(View, AjaxResponseMixin):
         for i in range(6):
             code_result=code_result+(str)(random.randint(0, 9))
         return code_result
+
+class UserResetPswdView(FormView,AjaxResponseMixin):
+    http_method_names = ['post']
+    form_class = UserResetPswdForm
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        context = {
+            'status': 'success',
+            'msg': u'密码修改成功',
+        }
+        return self.ajax_response(context)
+
+    def form_invalid(self, form):
+        self.update_errors(form.errors.popitem()[-1][0])
+        return self.ajax_response({})
 
 
 class AppConfigView(View, AjaxResponseMixin):
