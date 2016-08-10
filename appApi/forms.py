@@ -77,7 +77,7 @@ class UserRegisterForm (forms.Form):
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
-        return super(self.__class__, self).__init__(*args, **kwargs)
+        super(self.__class__, self).__init__(*args, **kwargs)
 
     def clean_mobilecode(self):
         code = self.request.session.get('code')

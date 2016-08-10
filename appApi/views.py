@@ -62,11 +62,10 @@ class UserRegisterView(FormView, AjaxResponseMixin):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
-        self.request = request
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
-    def get_form(self, *args, **kwargs):
-        return super(self.__class__, self).get_form(self.request, *args, **kwargs)
+    def get_form(self, form_class):
+        return form_class(self.request, **self.get_form_kwargs())
 
     def form_valid(self, form):
         form.save()
