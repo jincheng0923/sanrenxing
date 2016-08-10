@@ -36,7 +36,6 @@ class User(models.Model):
     community = models.ForeignKey(Community, blank=True, null=True, on_delete=None)
     email = models.CharField(max_length=64, blank=True, null=True)
     phone = models.CharField(max_length=11, blank=True, null=True)
-    yongjin = models.IntegerField()
     sex = models.IntegerField()
     signature = models.CharField(max_length=128)
     create_time = models.DateTimeField(auto_now_add=True)

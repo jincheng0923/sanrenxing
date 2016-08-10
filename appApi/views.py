@@ -64,8 +64,8 @@ class UserRegisterView(FormView, AjaxResponseMixin):
     def dispatch(self, request, *args, **kwargs):
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
-    def get_form(self, form_class):
-        return form_class(self.request, **self.get_form_kwargs())
+    def get_form(self):
+        return self.form_class(self.request, **self.get_form_kwargs())
 
     def form_valid(self, form):
         form.save()

@@ -81,15 +81,15 @@ class UserRegisterForm (forms.Form):
 
     def clean_mobilecode(self):
         code = self.request.session.get('code')
-        mobilecode = self.changed_data.get('mobilecode')
+        mobilecode = self.cleaned_data.get('mobilecode')
         print u'----------'+mobilecode
         if code != mobilecode :
             raise forms.ValidationError(
                 self.error_messages['invalid_code_error'])
 
     def clean(self):
-        phone = self.cleaned_data.get('phone', None);
-        pswd = self.cleaned_data.get('pswd', None)
+        phone = self.cleaned_data.get('phone')
+        pswd = self.cleaned_data.get('pswd')
 
         if phone and pswd:
             try:
@@ -105,7 +105,7 @@ class UserRegisterForm (forms.Form):
     def save(self):
         account = self.cleaned_data.get('account')
         pswd = self.cleaned_data['pswd']
-        user = User(phone=account, pswd=pswd)
+        user = User(phone=account, pswd=pswd,community_id=1)
         user.save()
 
 class UserResetPswdForm(forms.Form):
