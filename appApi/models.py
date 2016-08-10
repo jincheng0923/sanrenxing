@@ -85,3 +85,34 @@ class Config(models.Model):
 
     class Meta:
         db_table = 'config'
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=32)
+    sname = models.CharField(max_length=64, null=True, blank=True)
+    logo = models.CharField(max_length=64, null=True, blank=True)
+    rank = models.IntegerField(default=1)
+    status = models.CharField(max_length=2, default='A')
+    create_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'category'
+
+
+class Good(models.Model):
+    cate = models.ForeignKey(Category, on_delete=None)
+    community = models.ForeignKey(Community, on_delete=None)
+    name = models.CharField(max_length=16)
+    sname = models.CharField(max_length=64, null=True, blank=True)
+    des = models.TextField(null=True, blank=True)
+    logo = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=9, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=9, decimal_places=2)
+    spec = models.CharField(max_length=128, verbose_name=u'规格JSON', null=True, blank=True)
+    rank = models.IntegerField(default=1)
+    status = models.CharField(max_length=2, default='A')
+    create_time = models.DateTimeField(auto_now_add=True)
+    inventory = models.IntegerField(verbose_name=u'库存数')
+
+    class Meta:
+        db_table = 'goods'
