@@ -82,7 +82,7 @@ DATABASES = {
             "NAME": "web_zcm",
             "USER": "web_zcm",
             "PASSWORD": "web_zcm",
-            "HOST": "115.28.184.43",
+            "HOST": "139.196.235.1",
             "PORT": "3306",
             "STORAGE_ENGINE": "innodb",
     },

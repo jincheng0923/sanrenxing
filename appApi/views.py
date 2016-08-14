@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, View, FormView
 from commonService.views import ajax_login_required
 import random
 
-from forms import UserLoginForm, UserRegisterForm, UserResetPswdForm
+from forms import UserLoginForm, UserRegisterForm, UserResetPswdForm, AddCategoryForm
 
 SESSION_KEY = '_auth_user_id'
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -148,6 +148,28 @@ class AppConfigView(View, AjaxResponseMixin):
            }
            return self.ajax_response(data)
 
+
+
+class AddCategoryItem(FormView, AjaxResponseMixin):
+
+    form_class = AddCategoryForm
+
+    # @ajax_login_required
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        context = {
+            'status': 'success',
+            'msg': u'目录添加成功',
+        }
+        form.save()
+        return self.ajax_response(context)
+
+    def form_invalid(self, form):
+        self.update_errors(form.errors.popitem()[-1][0])
+        return self.ajax_response({})
 
 
 

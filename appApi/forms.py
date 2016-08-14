@@ -3,6 +3,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from models import User
+from models import Category
 
 class UserLoginForm(forms.Form):
 
@@ -164,6 +165,28 @@ class UserResetPswdForm(forms.Form):
         pswd = self.cleaned_data['pswd']
         user = User(pswd=pswd)
         user.save()
+
+
+class AddCategoryForm(forms.Form):
+
+    name = forms.CharField(required=True, error_messages={
+                               'required': u'名称不能为空',
+                           })
+    sname = forms.CharField(required=False)
+    logo = forms.CharField(required=False)
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        try:
+            ca = Category.objects.get(name=name)
+        except Exception as e:
+            print e
+            return  name
+        else:
+            raise forms.ValidationError(u'名称已经存在')
+
+    def save(self):
+        cat = Category.objects.create(**self.cleaned_data)
 
 
 

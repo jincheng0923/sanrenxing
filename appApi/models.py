@@ -1,3 +1,4 @@
+# coding:utf-8
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
@@ -11,7 +12,6 @@ import hashlib
 from django.db import models
 
 
-#
 from django.utils.crypto import salted_hmac
 
 

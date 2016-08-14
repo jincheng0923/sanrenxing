@@ -5,7 +5,7 @@ from django.conf.urls import url
 
 from views import UserLoginView, AppConfigView, UserResetPswdView
 from views import UserLoginOutView
-from views import UserLoginView, UserRegisterView, MobileCodeView
+from views import UserLoginView, UserRegisterView, MobileCodeView, AddCategoryItem
 
 urlpatterns  = (
     url(r'^user/login/$',UserLoginView.as_view()),
@@ -14,4 +14,5 @@ urlpatterns  = (
     url(r'^user/mobilecode/$', MobileCodeView.as_view()),
     url(r'^index/updateconfig/$', AppConfigView.as_view()),
     url(r'^user/resetpswdbyphone/$', UserResetPswdView.as_view()),
+    url(r'^category/add/$', AddCategoryItem.as_view()),
     )
