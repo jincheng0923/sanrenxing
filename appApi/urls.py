@@ -3,9 +3,15 @@
 from django.conf.urls import url
 
 
-from views import UserLoginView, AppConfigView, UserResetPswdView
+from views import UserLoginView
+from views import AppConfigView
+from views import UserResetPswdView
 from views import UserLoginOutView
-from views import UserLoginView, UserRegisterView, MobileCodeView, AddCategoryItem
+from views import UserLoginView
+from views import UserRegisterView
+from views import MobileCodeView
+from views import AddCategoryItem
+from views import UpdateGoodsView
 
 urlpatterns  = (
     url(r'^user/login/$',UserLoginView.as_view()),
@@ -15,4 +21,6 @@ urlpatterns  = (
     url(r'^index/updateconfig/$', AppConfigView.as_view()),
     url(r'^user/resetpswdbyphone/$', UserResetPswdView.as_view()),
     url(r'^category/add/$', AddCategoryItem.as_view()),
+    url(r'^good/add/$', AddCategoryItem.as_view()),
+    url(r'^good/update/$', UpdateGoodsView.as_view()),
     )

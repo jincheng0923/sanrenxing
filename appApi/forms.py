@@ -4,6 +4,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from models import User
 from models import Category
+from models import Good
 
 class UserLoginForm(forms.Form):
 
@@ -188,6 +189,95 @@ class AddCategoryForm(forms.Form):
     def save(self):
         cat = Category.objects.create(**self.cleaned_data)
 
+
+class AddGoodForm(forms.Form):
+    cate_id = forms.CharField(required=True, error_messages={
+        'required': '父级目录不能为空',
+    })
+    community_id = forms.CharField(required=True, error_messages={
+        'required': '所属社区不能为空',
+    })
+    name = forms.CharField(required=True, max_length=16, error_messages={
+        'required': '商品名称不能为空',
+        'max_length': '商品名称超长'
+    })
+    sname = forms.CharField(required=False, max_length=64, error_messages={
+        'max_length': '商品名称超长'
+    })
+    des = forms.CharField(required=False)
+    logo = forms.CharField(required=True, max_length=64, error_messages={
+        'required': '缩略图不能为空',
+        'max_length': '缩略图地址超长'
+    })
+    price = forms.DecimalField(required=False, max_digits=9, decimal_places=2)
+    sale_price = forms.DecimalField(required=True, max_digits=9, decimal_places=2, error_messages={
+        'required': '销售价格不能为空',
+    })
+    spec = forms.CharField(required=False, max_length=128)
+    inventory = forms.IntegerField(required=True, error_messages={
+        'required': '库存不能为空'
+    })
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        try:
+            Good.objects.get(name=name)
+        except Exception as e:
+            print e
+            return name
+        else:
+            raise forms.ValidationError('商品名称不能重复')
+
+    def save(self):
+        good = Good.objects.create(**self.cleaned_data)
+
+
+class UpdateGoodForm(forms.Form):
+    good_id = forms.CharField(required=True, error_messages={
+       'required': '商品ID不能为空',
+    })
+    cate_id = forms.CharField(required=False, error_messages={
+        'required': '父级目录不能为空',
+    })
+    community_id = forms.CharField(required=False, error_messages={
+        'required': '所属社区不能为空',
+    })
+    name = forms.CharField(required=True, max_length=16, error_messages={
+        'required': '商品名称不能为空',
+        'max_length': '商品名称超长'
+    })
+    sname = forms.CharField(required=False, max_length=64, error_messages={
+        'max_length': '商品名称超长'
+    })
+    des = forms.CharField(required=False)
+    logo = forms.CharField(required=True, max_length=64, error_messages={
+        'required': '缩略图不能为空',
+        'max_length': '缩略图地址超长'
+    })
+    price = forms.DecimalField(required=False, max_digits=9, decimal_places=2)
+    sale_price = forms.DecimalField(required=True, max_digits=9, decimal_places=2, error_messages={
+        'required': '销售价格不能为空',
+    })
+    spec = forms.CharField(required=False, max_length=128)
+    inventory = forms.IntegerField(required=False, error_messages={
+        'required': '库存不能为空'
+    })
+
+    def clean_good_id(self):
+        good_id = self.cleaned_data.get('good_id')
+        try:
+            good = Good.objects.get(pk=good_id)
+        except Exception as e:
+            print e
+            raise forms.ValidationError('商品ID不存在')
+        else:
+            self.good = good
+            return good_id
+
+    def save(self):
+        self.cleaned_data.pop('good_id')
+        self.good.update(**self.cleaned_data)
+        self.good.save()
 
 
 

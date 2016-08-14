@@ -12,7 +12,12 @@ from django.views.generic import TemplateView, View, FormView
 from commonService.views import ajax_login_required
 import random
 
-from forms import UserLoginForm, UserRegisterForm, UserResetPswdForm, AddCategoryForm
+from forms import UserLoginForm
+from forms import UserRegisterForm
+from forms import UserResetPswdForm
+from forms import AddCategoryForm
+from forms import AddGoodForm
+from forms import UpdateGoodForm
 
 SESSION_KEY = '_auth_user_id'
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -149,10 +154,10 @@ class AppConfigView(View, AjaxResponseMixin):
            return self.ajax_response(data)
 
 
-
 class AddCategoryItem(FormView, AjaxResponseMixin):
 
     form_class = AddCategoryForm
+    http_method_names = ['post',]
 
     # @ajax_login_required
     @csrf_exempt
@@ -172,4 +177,52 @@ class AddCategoryItem(FormView, AjaxResponseMixin):
         return self.ajax_response({})
 
 
+class AddGoodsView(FormView, AjaxResponseMixin):
 
+    form_class = AddGoodForm
+    http_method_names = ['post']
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        context = {
+            'status': 'success',
+            'msg': u'商品添加成功',
+        }
+        return self.ajax_response(context)
+
+    def form_invalid(self, form):
+        self.update_errors(form.errors.popitem()[-1][0])
+        return self.ajax_response({})
+
+
+class UpdateGoodsView(FormView, AjaxResponseMixin):
+
+    form_class = UpdateGoodForm
+    http_method_names = ['post']
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        context = {
+            'status': 'success',
+            'msg': u'商品修改成功',
+        }
+        return self.ajax_response(context)
+
+    def form_invalid(self, form):
+        self.update_errors(form.errors.popitem()[-1][0])
+        return self.ajax_response({})
+
+class GoodsListView(View, AjaxResponseMixin):
+
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        pass
