@@ -220,6 +220,7 @@ class UpdateGoodsView(FormView, AjaxResponseMixin):
         self.update_errors(form.errors.popitem()[-1][0])
         return self.ajax_response({})
 
+
 class GoodsListView(View, AjaxResponseMixin):
 
     http_method_names = ['get']

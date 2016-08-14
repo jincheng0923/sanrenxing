@@ -242,7 +242,7 @@ class UpdateGoodForm(forms.Form):
     community_id = forms.CharField(required=False, error_messages={
         'required': '所属社区不能为空',
     })
-    name = forms.CharField(required=True, max_length=16, error_messages={
+    name = forms.CharField(required=False, max_length=16, error_messages={
         'required': '商品名称不能为空',
         'max_length': '商品名称超长'
     })
