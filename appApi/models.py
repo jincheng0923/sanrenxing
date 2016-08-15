@@ -16,14 +16,19 @@ from django.utils.crypto import salted_hmac
 
 
 class Community(models.Model):
+
+    community_status = (
+        ('A', '有效'),
+        ('D', '已删除')
+    )
+
     name = models.CharField(max_length=64)
     province = models.CharField(max_length=16)
     city = models.CharField(max_length=16)
     area = models.CharField(max_length=16)
     address = models.CharField(max_length=256)
     create_time = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=4)
-
+    status = models.CharField(max_length=4, choices=community_status)
 
     class Meta:
         db_table = 'community'
@@ -116,3 +121,18 @@ class Good(models.Model):
 
     class Meta:
         db_table = 'goods'
+
+
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=None, related_name='cart')
+    good = models.ForeignKey(Good, on_delete=None)
+    num = models.IntegerField(default=1)
+    create_time = models.DateTimeField(auto_now_add=True)
+    change_time = models.DateTimeField(null=True, blank=True)
+    join_price = models.DecimalField()
+
+    class Meta:
+        db_table = 'cart'
+
+
+

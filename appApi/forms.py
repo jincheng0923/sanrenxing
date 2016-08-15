@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from models import User
 from models import Category
 from models import Good
+from django.db import transaction
 
 class UserLoginForm(forms.Form):
 
@@ -250,7 +251,7 @@ class UpdateGoodForm(forms.Form):
         'max_length': '商品名称超长'
     })
     des = forms.CharField(required=False)
-    logo = forms.CharField(required=True, max_length=64, error_messages={
+    logo = forms.CharField(required=False, max_length=64, error_messages={
         'required': '缩略图不能为空',
         'max_length': '缩略图地址超长'
     })
@@ -280,5 +281,45 @@ class UpdateGoodForm(forms.Form):
         self.good.save()
 
 
+class AddGood2CartForm(forms.Form):
 
+    user_id = forms.IntegerField(required=True, error_messages={
+        'required': '用户ID 不能为空',
+    })
+    good_id = forms.IntegerField(required=True, error_messages={
+        'required': '商品ID 不能为空',
+    })
+    num = forms.IntegerField(required=True, error_messages={
+        'required': '商品数量不能为空',
+    })
 
+    def clean_user_id(self):
+        user_id = self.cleaned_data.get('user_id')
+        try:
+            user = User.objects.get(pk=user_id)
+        except Exception as e:
+            print e
+            raise forms.ValidationError('用户ID错误')
+        else:
+            self.user = user
+            return user_id
+
+    def clean_good_id(self):
+        good_id = self.cleaned_data.get('good_id')
+        try:
+            good = Good.objects.get(pk=good_id, status='A')
+        except Exception as e:
+            print e
+            raise forms.ValidationError('商品ID错误')
+        else:
+            self.good = good
+            return good_id
+
+    def clean(self):
+        if self.good.inventory < self.clean_data.get('num'):
+            raise forms.ValidationError('商品库存不足，请修改添加量')
+        return self.cleaned_data
+
+    def save(self):
+        with transaction.atomic():
+            pass

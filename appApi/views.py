@@ -4,7 +4,9 @@ from django.core.serializers import json
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 from django.views.generic import DetailView
+from django.db.models import Q
 
 from appApi.models import Config
 from commonService.views import AjaxResponseMixin, send_sms
@@ -18,6 +20,10 @@ from forms import UserResetPswdForm
 from forms import AddCategoryForm
 from forms import AddGoodForm
 from forms import UpdateGoodForm
+from forms import AddGood2CartForm
+
+from models import Community
+from models import Good
 
 SESSION_KEY = '_auth_user_id'
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -84,6 +90,7 @@ class UserRegisterView(FormView, AjaxResponseMixin):
         self.update_errors(form.errors.popitem()[-1][0])
         return self.ajax_response({})
 
+
 class MobileCodeView(View, AjaxResponseMixin):
     http_method_names = ['get']
     def get(self, request, *args, **kwargs):
@@ -114,6 +121,7 @@ class MobileCodeView(View, AjaxResponseMixin):
         for i in range(6):
             code_result=code_result+(str)(random.randint(0, 9))
         return code_result
+
 
 class UserResetPswdView(FormView,AjaxResponseMixin):
     http_method_names = ['post']
@@ -224,6 +232,108 @@ class UpdateGoodsView(FormView, AjaxResponseMixin):
 class GoodsListView(View, AjaxResponseMixin):
 
     http_method_names = ['get']
+    page_size = 10
 
     def get(self, request, *args, **kwargs):
+        cate = request.GET.get('cate')
+        comm = request.GET.get('comm')
+        p = request.GET.get('p', 1)
+        goods_list = self.get_query_set(cate, comm, p)
+        return self.ajax_response({
+            'status': 'success',
+            'data': goods_list
+        })
+
+    def get_query_set(self, cate=None, comm=None, p=1):
+        query = Q()
+        if cate:
+            query &= Q(cate=cate)
+        if comm:
+            query &= Q(community=comm)
+        goods_query = Good.objects.filter(query).order_by('-rank')
+        goods_paginator = Paginator(goods_query, self.page_size)
+        goods_list = goods_paginator.page(p)
+        items = goods_list.object_list
+        return items
+
+
+class GoodsDetailView(View, AjaxResponseMixin):
+
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        gid = kwargs.get('gid')
+        context = {}
+        if not gid:
+            self.update_errors('商品ID为空')
+        else:
+            try:
+                good = Good.objects.get(pk=gid)
+            except Exception as e:
+                print e
+                self.update_errors('商品ID错误')
+            else:
+                context.update({
+                    'name': good.name,
+                    'price': good.sale_price,
+                    'pic': good.logo,
+                    'inventory': good.inventory,
+                })
+        return self.ajax_response(context)
+
+
+class CommunityListView(View, AjaxResponseMixin):
+
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        city = request.GET.get('city')
+        area = request.GET.get('area')
+        query = Q(status='A')
+        if city:
+            query &= Q(city=city)
+        if area:
+            query &= Q(area=area)
+        comm_list = Community.objects.fiter(query).values('id', 'name', 'address')
+        comm_list_dict = map(dict, comm_list)
+        return self.ajax_response({
+            'data': comm_list_dict
+        })
+
+
+class BindUserWithCommunity(FormView, AjaxResponseMixin):
+
+    http_method_names = ['post']
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
         pass
+
+    def form_invalid(self, form):
+        pass
+
+
+class CreateOrder(FormView, AjaxResponseMixin):
+    pass
+
+
+class AddGood2Cart(FormView, AjaxResponseMixin):
+
+    http_method_names = ['post']
+    form_class = AddGood2CartForm
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        context = {}
+        form.save()
+        return self.ajax_response(context)
+
+    def form_invalid(self, form):
+        self.update_errors(form.errors.popitem()[-1][0])
+        return self.ajax_response({})
