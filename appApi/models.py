@@ -135,4 +135,29 @@ class CartItem(models.Model):
         db_table = 'cart'
 
 
+class RbOrder(models.Model):
+    payid = models.IntegerField()
+    code = models.CharField(max_length=16)
+    title = models.CharField(max_length=128)
+    orderprice = models.DecimalField(max_digits=9, decimal_places=2)
+    payprice = models.DecimalField(max_digits=9, decimal_places=2)
+    kindcount = models.IntegerField()
+    count = models.IntegerField()
+    community = models.ForeignKey(Community, on_delete=None)
+    sellernote = models.CharField(max_length=256)
+    adddateline = models.IntegerField()
+    orderstatus = models.IntegerField()
+    paystatus = models.IntegerField()
+    sellerid = models.ForeignKey(User, on_delete=None)
+    buyerid = models.ForeignKey(User, on_delete=None)
+    buyernote = models.CharField(max_length=256)
+    buyername = models.CharField(max_length=64)
+    buyerphone = models.CharField(max_length=11)
+    buyeraddress = models.CharField(max_length=128)
+
+
+    class Meta:
+        db_table = 'order'
+
+
 

@@ -163,6 +163,7 @@ class AppConfigView(View, AjaxResponseMixin):
 
 
 class AddCategoryItem(FormView, AjaxResponseMixin):
+    #商品目录
 
     form_class = AddCategoryForm
     http_method_names = ['post',]
@@ -186,7 +187,7 @@ class AddCategoryItem(FormView, AjaxResponseMixin):
 
 
 class AddGoodsView(FormView, AjaxResponseMixin):
-
+    #添加商品
     form_class = AddGoodForm
     http_method_names = ['post']
 
@@ -318,6 +319,7 @@ class BindUserWithCommunity(FormView, AjaxResponseMixin):
 
 class CreateOrder(FormView, AjaxResponseMixin):
     pass
+
 
 
 class AddGood2Cart(FormView, AjaxResponseMixin):

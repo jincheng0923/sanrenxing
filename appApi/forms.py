@@ -323,3 +323,13 @@ class AddGood2CartForm(forms.Form):
     def save(self):
         with transaction.atomic():
             pass
+
+
+class CreateOrderForm(forms.Form):
+
+    community_id = forms.CharField(required=True, error_messages={
+        'required': '所属社区不能为空',
+    })
+    
+
+
