@@ -1,4 +1,6 @@
 # coding:utf-8
+import uuid
+from datetime import time
 
 from django import forms
 from django.contrib.auth import authenticate
@@ -330,6 +332,14 @@ class CreateOrderForm(forms.Form):
     community_id = forms.CharField(required=True, error_messages={
         'required': '所属社区不能为空',
     })
-    
+
+
+    def save(self):
+        community_id = self.cleaned_data('community_id')
+        code = time.strftime('%Y%m%d%H%I%M%S',time.localtime(time.time())+uuid.uuid1())
+
+
+
+
 
 
