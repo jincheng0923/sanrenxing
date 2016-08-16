@@ -1,13 +1,15 @@
 # coding:utf-8
 import uuid
-from datetime import time
+from datetime import datetime
 
 from django import forms
 from django.contrib.auth import authenticate
 from models import User
 from models import Category
 from models import Good
+from models import CartItem
 from django.db import transaction
+
 
 class UserLoginForm(forms.Form):
 
@@ -324,8 +326,33 @@ class AddGood2CartForm(forms.Form):
 
     def save(self):
         with transaction.atomic():
-            pass
+            num = self.cleaned_data.get('num')
+            try:
+                cart = CartItem.objects.get(user=self.user, good=self.good)
+            except Exception as e:
+                print e
+                cart = CartItem.objects.create(user=self.user, good=self.good, num=num, join_price=self.good.sale_price)
+            else:
+                cart.num += num
+                cart.change_time = datetime.now()
+            finally:
+                self.good.inventory -= num
+                cart.save()
+                self.good.save()
 
+
+class UpdateCartItemNumForm(forms.Form):
+
+    cart_id = forms.IntegerField(required=True, error_messages={
+        'required': '购物车子项ID不能为空',
+    })
+    num = forms.IntegerField(required=True, error_messages={
+        'required': '修改内容不能为空',
+    })
+
+
+    def clean_car_id(self):
+        pass
 
 class CreateOrderForm(forms.Form):
 
@@ -333,10 +360,9 @@ class CreateOrderForm(forms.Form):
         'required': '所属社区不能为空',
     })
 
-
     def save(self):
         community_id = self.cleaned_data('community_id')
-        code = time.strftime('%Y%m%d%H%I%M%S',time.localtime(time.time())+uuid.uuid1())
+        code = datetime.now().strftime('%Y%m%d%H%M%S')+uuid.uuid1()
 
 
 

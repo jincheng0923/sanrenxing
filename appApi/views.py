@@ -332,8 +332,10 @@ class AddGood2Cart(FormView, AjaxResponseMixin):
         return super(self.__class__, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        context = {}
-        form.save()
+        context = {
+            'status': 'success',
+            'msg': u'加入成功',
+        }
         return self.ajax_response(context)
 
     def form_invalid(self, form):

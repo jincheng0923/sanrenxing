@@ -124,20 +124,26 @@ class Good(models.Model):
 
 
 class CartItem(models.Model):
+
+    cart_item_status = (
+        ('A', '有效'),
+        ('D', '已删除'),
+        ('E', '已过期'),
+    )
     user = models.ForeignKey(User, on_delete=None, related_name='cart')
     good = models.ForeignKey(Good, on_delete=None)
     num = models.IntegerField(default=1)
     create_time = models.DateTimeField(auto_now_add=True)
     change_time = models.DateTimeField(null=True, blank=True)
     join_price = models.DecimalField()
+    status = models.CharField(max_length=2, default='A', choices=cart_item_status)
 
     class Meta:
         db_table = 'cart'
 
 
-class RbOrder(models.Model):
-    payid = models.IntegerField()
-    code = models.CharField(max_length=16)
+class Order(models.Model):
+    logic_id = models.CharField(max_length=32)
     title = models.CharField(max_length=128)
     orderprice = models.DecimalField(max_digits=9, decimal_places=2)
     payprice = models.DecimalField(max_digits=9, decimal_places=2)
@@ -148,8 +154,8 @@ class RbOrder(models.Model):
     adddateline = models.IntegerField()
     orderstatus = models.IntegerField()
     paystatus = models.IntegerField()
-    sellerid = models.ForeignKey(User, on_delete=None)
-    buyerid = models.ForeignKey(User, on_delete=None)
+    seller = models.ForeignKey(User, on_delete=None)
+    buyer = models.ForeignKey(User, on_delete=None)
     buyernote = models.CharField(max_length=256)
     buyername = models.CharField(max_length=64)
     buyerphone = models.CharField(max_length=11)
