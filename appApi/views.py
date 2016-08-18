@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
-from django.core import serializers
-from django.core.serializers import json
-from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from django.views.generic import DetailView
 from django.db.models import Q
+from django.views.generic import View, FormView
+from collections import defaultdict
 
 from appApi.models import Config
 from commonService.views import AjaxResponseMixin, send_sms
-from django.views.generic import TemplateView, View, FormView
 from commonService.views import ajax_login_required
-import random
 
 from forms import UserLoginForm
 from forms import UserRegisterForm
@@ -21,9 +17,15 @@ from forms import AddCategoryForm
 from forms import AddGoodForm
 from forms import UpdateGoodForm
 from forms import AddGood2CartForm
+from forms import UpdateCartItemNumForm
 
 from models import Community
 from models import Good
+from models import User
+from models import CartItem
+
+import random
+
 
 SESSION_KEY = '_auth_user_id'
 HASH_SESSION_KEY = '_auth_user_hash'
@@ -187,7 +189,13 @@ class AddCategoryItem(FormView, AjaxResponseMixin):
 
 
 class AddGoodsView(FormView, AjaxResponseMixin):
-    #添加商品
+
+    '''
+        :param:
+            refer to good model
+        添加商品
+    '''
+
     form_class = AddGoodForm
     http_method_names = ['post']
 
@@ -210,6 +218,10 @@ class AddGoodsView(FormView, AjaxResponseMixin):
 
 class UpdateGoodsView(FormView, AjaxResponseMixin):
 
+    '''
+        修改商品信息接口
+    '''
+
     form_class = UpdateGoodForm
     http_method_names = ['post']
 
@@ -231,6 +243,10 @@ class UpdateGoodsView(FormView, AjaxResponseMixin):
 
 
 class GoodsListView(View, AjaxResponseMixin):
+
+    '''
+        获取商品列表接口
+    '''
 
     http_method_names = ['get']
     page_size = 10
@@ -260,6 +276,11 @@ class GoodsListView(View, AjaxResponseMixin):
 
 class GoodsDetailView(View, AjaxResponseMixin):
 
+    '''
+        获取商品详情接口
+        参数 商品ID
+    '''
+
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
@@ -285,6 +306,11 @@ class GoodsDetailView(View, AjaxResponseMixin):
 
 class CommunityListView(View, AjaxResponseMixin):
 
+    '''
+        获取小区列表
+        参数 城市， 街道
+    '''
+
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
@@ -304,6 +330,10 @@ class CommunityListView(View, AjaxResponseMixin):
 
 class BindUserWithCommunity(FormView, AjaxResponseMixin):
 
+    '''
+        用户绑定小区接口
+        待议
+    '''
     http_method_names = ['post']
 
     @csrf_exempt
@@ -317,12 +347,14 @@ class BindUserWithCommunity(FormView, AjaxResponseMixin):
         pass
 
 
-class CreateOrder(FormView, AjaxResponseMixin):
-    pass
-
 
 
 class AddGood2Cart(FormView, AjaxResponseMixin):
+
+    '''
+        添加商品到购物车接口
+        参数 good_id user_id num
+    '''
 
     http_method_names = ['post']
     form_class = AddGood2CartForm
@@ -341,3 +373,81 @@ class AddGood2Cart(FormView, AjaxResponseMixin):
     def form_invalid(self, form):
         self.update_errors(form.errors.popitem()[-1][0])
         return self.ajax_response({})
+
+
+class UpdateCartItem(FormView, AjaxResponseMixin):
+
+    '''
+        修改购物车商品数量
+    '''
+
+    http_method_names = ['post']
+    form_class = UpdateCartItemNumForm
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(self.__class__, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        context = {
+            'status': 'success',
+            'msg': u'修改成功',
+        }
+        return self.ajax_response(context)
+
+    def form_invalid(self, form):
+        self.update_errors(form.errors.popitem()[-1][0])
+        return self.ajax_response({})
+
+
+class GetUserCartItemList(View, AjaxResponseMixin):
+
+    '''
+        获取用户购物车列表
+        参数： 用户ID
+        返回：分小区
+    '''
+
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        user_id = request.GET.get('user_id')
+        context = {}
+        if not user_id:
+            self.update_errors('用户ID为空')
+        else:
+            try:
+                user = User.objects.get(pk=user_id)
+            except Exception as e:
+                print e
+                self.update_errors('用户ID错误')
+            else:
+                cart_items = CartItem.objects.filter(user=user, status='A')
+                context.update({
+                    'data': self.parse_cart_item(cart_items)
+                })
+        return self.ajax_response(context)
+
+    def parse_cart_item(self, items):
+        comm_goods_dict = defaultdict(list)
+        for item in items:
+            comm_goods_dict['item.good.community.name'].append(
+                    {
+                        'good_name': item.good.name,
+                        'num': item.num,
+                        'msg': '库存不足' if item.num > item.good.inventory else '',
+                        'logo': item.good.logo,
+                        'price': item.good.sale_price,
+                        'total_price': round(item.num * item.good.sale_price, 2)
+                    }
+            )
+        context = []
+        for k, v in comm_goods_dict.items():
+            context.append({
+                'comm_name': k,
+                'good_list': v
+            })
+        return context
+
+class CreateOrder(FormView, AjaxResponseMixin):
+    pass

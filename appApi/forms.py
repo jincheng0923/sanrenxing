@@ -325,20 +325,17 @@ class AddGood2CartForm(forms.Form):
         return self.cleaned_data
 
     def save(self):
-        with transaction.atomic():
-            num = self.cleaned_data.get('num')
-            try:
-                cart = CartItem.objects.get(user=self.user, good=self.good)
-            except Exception as e:
-                print e
-                cart = CartItem.objects.create(user=self.user, good=self.good, num=num, join_price=self.good.sale_price)
-            else:
-                cart.num += num
-                cart.change_time = datetime.now()
-            finally:
-                self.good.inventory -= num
-                cart.save()
-                self.good.save()
+        num = self.cleaned_data.get('num')
+        try:
+            cart = CartItem.objects.get(user=self.user, good=self.good)
+        except Exception as e:
+            print e
+            cart = CartItem.objects.create(user=self.user, good=self.good, num=num, join_price=self.good.sale_price)
+        else:
+            cart.num += num
+            cart.change_time = datetime.now()
+        finally:
+            cart.save()
 
 
 class UpdateCartItemNumForm(forms.Form):
@@ -350,9 +347,25 @@ class UpdateCartItemNumForm(forms.Form):
         'required': '修改内容不能为空',
     })
 
+    def clean_cart_id(self):
+        try:
+            cart = CartItem.objects.get(pk=self.cleaned_data.get('cart_id'))
+        except Exception as e:
+            print e
+            raise forms.ValidationError('购物车项ID 错误')
+        else:
+            self.cart = cart
+            return self.cleaned_data.get('cart_id')
 
-    def clean_car_id(self):
-        pass
+    def clean_num(self):
+        if self.cleaned_data.get('cart_id') > self.cart.good.inventory:
+            raise forms.ValidationError('商品库存不足，修改时失败')
+        return self.cleaned_data.get('num')
+
+    def save(self):
+        self.cart.num = self.cleaned_data.get('num')
+        self.cart.save()
+
 
 class CreateOrderForm(forms.Form):
 
